@@ -11,7 +11,8 @@ import org.openimaj.image.ImageUtilities;
 import org.openimaj.image.MBFImage;
 import org.openimaj.video.VideoWriter;
 import org.openimaj.video.xuggle.XuggleVideoWriter;
-
+import java.io.File;
+import java.io.IOException;
 import uk.ac.soton.ecs.jsh2.streetview.Route.Waypoint;
 
 /**
@@ -42,6 +43,15 @@ public class App
 	@Option(name = "--height", aliases = "-h", usage = "Image height.")
 	int height = 300;
 
+	@Option(name = "--fov", aliases = "-f", usage = "Image zoom.")
+	int fov = 90;
+
+	@Option(name = "--pitch", aliases = "-p", usage = "rotamiento vertical.")
+	int pitch = 0;
+
+	@Option(name = "--heading", aliases = "-he", usage = "rotamiento.")
+	int heading = 361;
+
 	@Option(
 			name = "--from",
 			usage = "From coordinates formatted as lat,lng",
@@ -55,44 +65,48 @@ public class App
 	String to;
 
 	@Option(
+			name = "--mode",
+			usage = "Mode of rute")
+	String mode = "DRIVING";
+
+	@Option(
 			name = "--time-recode",
 			usage = "Recode the path based on the time of each segment; the images will be further apart when moving faster")
 	private boolean timeRecode;
 
 	@Option(
+			name = "--head",
+			usage = "Si esta activado, las imagenes tienen el head de la siguiente")
+	private boolean head;
+
+	@Option(
 			name = "--fpx",
 			usage = "Number of images per X. If --time-recode is enabled X is seconds; otherwise it is metres.")
-	private double fpx = 0.01;
+	private double fpx = 0.1;
 
 	private File jsonPath;
 	private File videoPath;
 	private File imagesPath;
+	int num = 0;
 
 	private void checkPaths() throws CmdLineException {
-		jsonPath = output.endsWith(".json") ? new File(output) : new File(output + ".json");
+		jsonPath = output.endsWith(".json") ? new File(output) : new File(output + "_" +  heading + "_" + pitch + "_" + fov + ".json");
 
-		if (jsonPath.exists()) {
-			throw new CmdLineException(null, "Error: JSON output file already exists; please remove it first.");
-		}
 
 		String base = jsonPath.getAbsolutePath();
 		base = base.substring(0, base.lastIndexOf("."));
 
 		if (saveVideo) {
-			videoPath = new File(base + ".mp4");
+			videoPath = new File(base + "_" + heading + "_" + pitch + "_" + fov + ".mp4");
 
-			if (videoPath.exists()) {
-				throw new CmdLineException(null, "Error: video output file (" + videoPath.getName()
-						+ ") already exists; please remove it first.");
-			}
+
 		}
 
 		if (saveImages) {
-			imagesPath = new File(base + "-jpegs");
-
-			if (imagesPath.exists()) {
-				throw new CmdLineException(null, "Error: images output directory (" + imagesPath.getName()
-						+ ") already exists; please remove it first.");
+			if(this.head== false)
+			imagesPath = new File(base +  "_" + mode + "_" + heading + "_" + pitch + "_" + fov + "-jpegs");
+			else{
+				imagesPath = new File(base +  "_" + mode + "_+" + heading + "_" + pitch + "_" + fov + "-jpegs");
 			}
 
 			imagesPath.mkdirs();
@@ -100,7 +114,7 @@ public class App
 	}
 
 	private void execute() throws Exception {
-		final RouteMaster routeMaster = new RouteMaster(googleApiKey, width, height, timeRecode, fpx);
+		final RouteMaster routeMaster = new RouteMaster(googleApiKey, width, height, timeRecode, fpx, fov, pitch, heading, head, mode);
 		final Route route = routeMaster.computeRoute(from, to);
 
 		VideoWriter<MBFImage> writer = null;
@@ -119,9 +133,11 @@ public class App
 				}
 
 				if (saveImages) {
-					final File imgFile = new File(imagesPath, String.format("%f_%f_%f.jpg", wp.latlng.lat, wp.latlng.lng,
-							wp.heading));
+
+					final File imgFile = new File(imagesPath, String.format("%d_%f_%f_%d_%d_%d.jpg",num, wp.latlng.lat, wp.latlng.lng, heading, pitch, fov));
+
 					ImageUtilities.write(image, imgFile);
+					num = num + 1;
 				}
 			}
 		} finally {
