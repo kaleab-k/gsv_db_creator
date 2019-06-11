@@ -1,11 +1,18 @@
-# StreetviewExtractor
+# Google Street View (GSV) database creator
 Commandline tool to extract streetview images along a route between two locations
 
+# Requirements
+- Java Development Kit (https://www.oracle.com/technetwork/java/javase/overview/index.html)
+- Apache Maven (https://maven.apache.org/)
+- IDE (IntelliJ IDEA) [comment]: <> (Also for usage? not developer)
 
-##Compiling
+# Dependencies
+This code uses the StreetviewExtractor library (https://github.com/jonhare/StreetviewExtractor)
+
+# Installation and compilation
 You need Apache Maven. From a terminal run `mvn package shade:shade` to build an executable jar.
 
-##Usage
+# Usage
 You will need a Google API key - get one here: https://console.developers.google.com.
 You'll need to enable the "Directions API" and "Street View Image API".
 
@@ -31,4 +38,8 @@ Example:
 
 		java -jar target/StreetviewExtractor-1.0-SNAPSHOT.jar --from 40.631538,-73.965327 --to 40.691099,-73.991785 -i -v -o test.json -a <your_api_key>
 
+
+# Database structure
+-
+-
 
