@@ -5,8 +5,6 @@ import java.net.URL;
 
 import com.google.gson.*;
 import org.apache.commons.io.FileUtils;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
@@ -14,8 +12,6 @@ import org.openimaj.image.ImageUtilities;
 import org.openimaj.image.MBFImage;
 import org.openimaj.video.VideoWriter;
 import org.openimaj.video.xuggle.XuggleVideoWriter;
-import java.io.File;
-import java.io.IOException;
 import uk.ac.soton.ecs.jsh2.streetview.Route.Waypoint;
 
 /**
@@ -78,9 +74,9 @@ public class App
 	private boolean timeRecode;
 
 	@Option(
-			name = "--head",
-			usage = "Si esta activado, las imagenes tienen el head de la siguiente")
-	private boolean head;
+			name = "--follow-route",
+			usage = "Recompute the heading according to the direction between consecutive points")
+	private boolean follow_route;
 
 	@Option(
 			name = "--fpx",
@@ -109,7 +105,7 @@ public class App
 		}
 
 		if (saveImages) {
-			if(this.head== false)
+			if(this.follow_route == false)
 //				imagesPath = new File(base +  "_" + mode + "_" + heading + "_" + pitch + "_" + fov + "-jpegs");
 				imagesPath = new File(base + "-jpegs");
 
@@ -123,7 +119,7 @@ public class App
 	}
 
 	private void execute() throws Exception {
-		final RouteMaster routeMaster = new RouteMaster(googleApiKey, width, height, timeRecode, fpx, fov, pitch, heading, head, mode);
+		final RouteMaster routeMaster = new RouteMaster(googleApiKey, width, height, timeRecode, fpx, fov, pitch, heading, follow_route, mode);
 		final Route route = routeMaster.computeRoute(from, to);
 
 		VideoWriter<MBFImage> writer = null;
