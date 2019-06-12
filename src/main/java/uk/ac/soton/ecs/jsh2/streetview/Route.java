@@ -49,8 +49,8 @@ public class Route extends ArrayList<Waypoint> {
 		public String getStreetviewUrl() {
 			if (mapsKey != null && mapsKey.length() > 0)
 				return "https://maps.googleapis.com/maps/api/streetview?size=" + width + "x" + height + "&location="
-						+ latlng
-						+ "&heading=" + heading + "&pitch=" + pitch + "&fov=" + fov + "&key=" + mapsKey +"&source=outdoor";
+				+ latlng
+				+ "&heading=" + heading + "&pitch=" + pitch + "&fov=" + fov + "&key=" + mapsKey +"&source=outdoor";
 
 			return "https://maps.googleapis.com/maps/api/streetview?size=" + width + "x" + height + "&location=" + latlng
 					+ "&heading=" + heading + "&pitch=" + pitch + "&fov=" + fov +"&source=outdoor";

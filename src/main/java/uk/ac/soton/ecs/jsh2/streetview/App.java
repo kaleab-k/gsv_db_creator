@@ -3,7 +3,10 @@ package uk.ac.soton.ecs.jsh2.streetview;
 import java.io.File;
 import java.net.URL;
 
+import com.google.gson.*;
 import org.apache.commons.io.FileUtils;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
@@ -66,7 +69,7 @@ public class App
 
 	@Option(
 			name = "--mode",
-			usage = "Mode of rute")
+			usage = "Mode of route")
 	String mode = "DRIVING";
 
 	@Option(
@@ -89,6 +92,9 @@ public class App
 	private File imagesPath;
 	int num = 0;
 
+	// Used to avoid saving same image more than once
+	MBFImage prevImg;
+
 	private void checkPaths() throws CmdLineException {
 		jsonPath = output.endsWith(".json") ? new File(output) : new File(output + "_" +  heading + "_" + pitch + "_" + fov + ".json");
 
@@ -104,9 +110,12 @@ public class App
 
 		if (saveImages) {
 			if(this.head== false)
-				imagesPath = new File(base +  "_" + mode + "_" + heading + "_" + pitch + "_" + fov + "-jpegs");
+//				imagesPath = new File(base +  "_" + mode + "_" + heading + "_" + pitch + "_" + fov + "-jpegs");
+				imagesPath = new File(base + "-jpegs");
+
 			else{
-				imagesPath = new File(base +  "_" + mode + "_+" + heading + "_" + pitch + "_" + fov + "-jpegs");
+//				imagesPath = new File(base +  "_" + mode + "_" + heading + "_" + pitch + "_" + fov + "-jpegs");
+				imagesPath = new File(base + "-jpegs");
 			}
 
 			imagesPath.mkdirs();
@@ -119,27 +128,64 @@ public class App
 
 		VideoWriter<MBFImage> writer = null;
 		try {
-			FileUtils.write(jsonPath, route.toString());
+			// Initialize JSONObject to store the route info
+			JsonObject routeJSON = new JsonObject();
+			// Append the below info of the configuration to the JSONObject
+			routeJSON.addProperty("from", from);
+			routeJSON.addProperty("to", to);
+			routeJSON.addProperty("heading", heading);
+			routeJSON.addProperty("pitch", pitch);
+			routeJSON.addProperty("fov", fov);
+			routeJSON.addProperty("mode", mode);
+			routeJSON.addProperty("fpx", fpx);
+			routeJSON.addProperty("width", width);
+			routeJSON.addProperty("height", height);
+			// Initialize JSONArray to store the details of every image in the route
+			JsonArray imgJArray = new JsonArray();
 
 			if (saveVideo)
 				writer = new XuggleVideoWriter(videoPath.getAbsolutePath(), width, height, 60);
 
 			for (final Waypoint wp : route) {
-				System.err.println("Processing " + wp.latlng.lat + " " + wp.latlng.lng);
+
 				final MBFImage image = ImageUtilities.readMBF(new URL(wp.getStreetviewUrl()));
+				if (prevImg != null && prevImg.equals(image)){
+					continue;
+				}
+				// Init JSONObject for every image in the route
+//				JSONObject imgJSON = new JSONObject();
+				JsonObject imgJSON = new JsonObject();
+				// Set the sequence number, latitude and longitude of the place
+				imgJSON.addProperty("seqNumber", num);
+				imgJSON.addProperty("lat", wp.latlng.lat);
+				imgJSON.addProperty("lng", wp.latlng.lng);
+				imgJSON.addProperty("heading", wp.heading);
+				// Add the object to the array
+				imgJArray.add(imgJSON);
 
 				if (saveVideo && writer != null) {
 					writer.addFrame(image);
 				}
 
 				if (saveImages) {
-
-					final File imgFile = new File(imagesPath, String.format("%d_%f_%f_%d_%d_%d.jpg",num, wp.latlng.lat, wp.latlng.lng, heading, pitch, fov));
+//					final File imgFile = new File(imagesPath, String.format("%05d_%f_%f_%d_%d_%d.jpg",num, wp.latlng.lat, wp.latlng.lng, heading, pitch, fov));
+					final File imgFile = new File(imagesPath, String.format("%05d.jpg",num));
 
 					ImageUtilities.write(image, imgFile);
-					num = num + 1;
 				}
+				prevImg = image;
+				num = num + 1;
 			}
+			// Append the array to the route JSONObject
+			routeJSON.add("images", imgJArray);
+
+			/* PrettyJsonString */
+			Gson gson = new GsonBuilder().setPrettyPrinting().create();
+			JsonParser jp = new JsonParser();
+			JsonElement je = jp.parse(routeJSON.toString());
+			// Store the pretty JSON string to the file
+			FileUtils.write(jsonPath, gson.toJson(je));
+
 		} finally {
 			if (saveVideo && writer != null) {
 				writer.close();

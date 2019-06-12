@@ -60,8 +60,8 @@ public class RouteMaster {
 	 * @param recodeParam
 	 *            if timeRecode then this is frames per second; otherwise this
 	 *            is frames per metre
-	 * @param modo
-	 *              Mode of the rute
+     * @param modo
+     *              Mode of the rute
 	 */
 	public RouteMaster(String gmapsApiKey, int width, int height, boolean timeRecode, double recodeParam, int fov, int pitch, int heading, boolean head, String modo) {
 		this.context = new GeoApiContext();
@@ -93,7 +93,7 @@ public class RouteMaster {
 
 
 
-		r.rawRoute = dir[0];
+        r.rawRoute = dir[0];
 
 		// now recode the route into a set of waypoints
 		for (final DirectionsLeg leg : r.rawRoute.legs) {
@@ -115,10 +115,10 @@ public class RouteMaster {
 					heading = computeDirection(current, r.get(i + 1));
 				}
 				if (this.heading  == 361){
-					current.heading = heading;}
+				    current.heading = heading;}
 				else{
-					current.heading = heading + this.heading;
-				}
+				    current.heading = heading + this.heading;
+                }
 			}
 		}
 		else{
