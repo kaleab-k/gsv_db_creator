@@ -27,39 +27,39 @@ public class Route extends ArrayList<Waypoint> {
 	 *
 	 */
 	public class Waypoint extends LatLngPoint2d {
+
 		public double heading;
 
 		/**
 		 * Construct with the given position
 		 *
 		 * @param latlng
+		 * 				Latitud y longitud
 		 * @param mapsKey
+		 * 				Clave API
 		 */
 		public Waypoint(LatLng latlng) {
 			super(latlng);
 		}
 
 		/**
-		 * @param pitch
-		 *            the streetview image pitch
+
 		 * @return the streetview url for this waypoint
 		 */
-		public String getStreetviewUrl(double pitch) {
+		public String getStreetviewUrl() {
 			if (mapsKey != null && mapsKey.length() > 0)
 				return "https://maps.googleapis.com/maps/api/streetview?size=" + width + "x" + height + "&location="
 						+ latlng
-						+ "&heading=" + heading + "&pitch=" + pitch + "&key=" + mapsKey;
+						+ "&heading=" + heading + "&pitch=" + pitch + "&fov=" + fov + "&key=" + mapsKey +"&source=outdoor";
 
 			return "https://maps.googleapis.com/maps/api/streetview?size=" + width + "x" + height + "&location=" + latlng
-					+ "&heading=" + heading + "&pitch=" + pitch;
+					+ "&heading=" + heading + "&pitch=" + pitch + "&fov=" + fov +"&source=outdoor";
 		}
 
 		/**
 		 * @return the streetview url with pitch set to 0 degrees (level)
 		 */
-		public String getStreetviewUrl() {
-			return getStreetviewUrl(0);
-		}
+
 
 		/**
 		 * @return the jsonobject encoding this waypoint
@@ -93,15 +93,22 @@ public class Route extends ArrayList<Waypoint> {
 	protected String mapsKey;
 	protected int width = 600;
 	protected int height = 300;
+	protected int fov = 90;
+	protected int pitch = 0;
+	protected int heading = 120;
 
 	public static int WAYPOINTS_PER_SECOND = 1;
 
 	protected DirectionsRoute rawRoute;
 
-	public Route(int width, int height, String mapsKey) {
+	public Route(int width, int height, String mapsKey, int fov, int pitch,  int heading) {
 		this.width = width;
 		this.height = height;
 		this.mapsKey = mapsKey;
+		this.fov = fov;
+		this.pitch = pitch;
+		this.heading = heading;
+
 	}
 
 	/**

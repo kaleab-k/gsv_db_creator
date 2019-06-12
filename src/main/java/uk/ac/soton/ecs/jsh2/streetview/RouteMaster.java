@@ -3,6 +3,8 @@ package uk.ac.soton.ecs.jsh2.streetview;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.maps.DirectionsApiRequest;
+import com.google.maps.model.*;
 import org.openimaj.math.geometry.path.Polyline;
 import org.openimaj.math.geometry.path.resample.LinearResampler;
 import org.openimaj.math.geometry.point.Point2d;
@@ -11,10 +13,9 @@ import uk.ac.soton.ecs.jsh2.streetview.Route.Waypoint;
 
 import com.google.maps.DirectionsApi;
 import com.google.maps.GeoApiContext;
-import com.google.maps.model.DirectionsLeg;
+import com.google.maps.internal.StringJoin.UrlValue;
+
 import com.google.maps.model.DirectionsRoute;
-import com.google.maps.model.DirectionsStep;
-import com.google.maps.model.LatLng;
 
 /**
  * Class to compute routes between two points
@@ -30,8 +31,13 @@ public class RouteMaster {
 	protected String mapsKey;
 	protected int width = 600;
 	protected int height = 300;
+	protected int fov = 90;
+	protected int pitch = 0;
+	protected int heading = 180;
+	String modo = "DRIVING";
 
 	private boolean timeRecode;
+	private boolean head;
 	private double recodeParam;
 
 	/**
@@ -41,13 +47,23 @@ public class RouteMaster {
 	 *            image width
 	 * @param height
 	 *            image height
+	 * @param fov
+	 *            image zoom
+	 * @param pitch
+	 * 				rotamiento vertical
+	 * @param heading
+	 * 	 	           rotamiento de la imagen
 	 * @param timeRecode
 	 *            if true then recode path based on time; otherwise on distance
+	 *@param head
+	 * 			if true then head codigo
 	 * @param recodeParam
 	 *            if timeRecode then this is frames per second; otherwise this
 	 *            is frames per metre
+	 * @param modo
+	 *              Mode of the rute
 	 */
-	public RouteMaster(String gmapsApiKey, int width, int height, boolean timeRecode, double recodeParam) {
+	public RouteMaster(String gmapsApiKey, int width, int height, boolean timeRecode, double recodeParam, int fov, int pitch, int heading, boolean head, String modo) {
 		this.context = new GeoApiContext();
 		this.context.setApiKey(gmapsApiKey);
 		this.mapsKey = gmapsApiKey;
@@ -55,11 +71,16 @@ public class RouteMaster {
 		this.height = height;
 		this.timeRecode = timeRecode;
 		this.recodeParam = recodeParam;
+		this.fov = fov;
+		this.pitch = pitch;
+		this.heading = heading;
+		this.head = head;
+		this.modo = modo;
 	}
 
 	public Route computeRoute(String origin, String destination) throws Exception
 	{
-		final Route r = new Route(width, height, mapsKey);
+		final Route r = new Route(width, height, mapsKey, fov, pitch, heading);
 
 		computeDirections(r, origin, destination);
 
@@ -68,26 +89,45 @@ public class RouteMaster {
 
 	protected void computeDirections(Route r, String origin, String destination) throws Exception {
 		// compute raw route using gmaps api
-		final DirectionsRoute[] dir = DirectionsApi.getDirections(context, origin, destination).await();
+		final DirectionsRoute[] dir = DirectionsApi.getDirections(context, origin, destination).mode(TravelMode.valueOf(modo)).await();
+
+
+
 		r.rawRoute = dir[0];
 
 		// now recode the route into a set of waypoints
 		for (final DirectionsLeg leg : r.rawRoute.legs) {
 			for (final DirectionsStep step : leg.steps) {
+
 				final List<LatLng> path = step.polyline.decodePath();
 				r.addAll(recodePath(r, path, step.duration.inSeconds, step.distance.inMeters));
+
 			}
 		}
 
 		// update the directions so that when at a waypoint you're looking
 		// towards the next
-		double heading = 0;
-		for (int i = 0; i < r.size(); i++) {
-			final Waypoint current = r.get(i);
-			if (i < r.size() - 1) {
-				heading = computeDirection(current, r.get(i + 1));
+		if (head) {
+			double heading = 0;
+			for (int i = 0; i < r.size(); i++) {
+				final Waypoint current = r.get(i);
+				if (i < r.size() - 1) {
+					heading = computeDirection(current, r.get(i + 1));
+				}
+				if (this.heading  == 361){
+					current.heading = heading;}
+				else{
+					current.heading = heading + this.heading;
+				}
 			}
-			current.heading = heading;
+		}
+		else{
+
+			for (int i = 0; i < r.size(); i++) {
+				final Waypoint current = r.get(i);
+
+				current.heading = this.heading;
+			}
 		}
 	}
 
