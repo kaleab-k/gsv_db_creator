@@ -37,7 +37,7 @@ public class RouteMaster {
 	String modo = "DRIVING";
 
 	private boolean timeRecode;
-	private boolean follow_route;
+	private boolean followRoute;
 	private double recodeParam;
 
 	/**
@@ -55,7 +55,7 @@ public class RouteMaster {
 	 * 	 	           rotamiento de la imagen
 	 * @param timeRecode
 	 *            if true then recode path based on time; otherwise on distance
-	 *@param follow_route
+	 *@param followRoute
 	 * 			if true then follow_route by computing the direction
 	 * @param recodeParam
 	 *            if timeRecode then this is frames per second; otherwise this
@@ -63,7 +63,7 @@ public class RouteMaster {
      * @param modo
      *              Mode of the rute
 	 */
-	public RouteMaster(String gmapsApiKey, int width, int height, boolean timeRecode, double recodeParam, int fov, int pitch, int heading, boolean follow_route, String modo) {
+	public RouteMaster(String gmapsApiKey, int width, int height, boolean timeRecode, double recodeParam, int fov, int pitch, int heading, boolean followRoute, String modo) {
 		this.context = new GeoApiContext();
 		this.context.setApiKey(gmapsApiKey);
 		this.mapsKey = gmapsApiKey;
@@ -73,9 +73,9 @@ public class RouteMaster {
 		this.recodeParam = recodeParam;
 		this.fov = fov;
 		this.pitch = pitch;
-		this.heading = heading;
-		this.follow_route = follow_route;
 		this.modo = modo;
+		this.heading = heading;
+		this.followRoute = followRoute;
 	}
 
 	public Route computeRoute(String origin, String destination) throws Exception
@@ -107,7 +107,7 @@ public class RouteMaster {
 
 		// update the directions so that when at a waypoint you're looking
 		// towards the next
-		if (follow_route) {
+		if (followRoute) {
 			double heading = 0;
 			for (int i = 0; i < r.size(); i++) {
 				final Waypoint current = r.get(i);

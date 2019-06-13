@@ -28,7 +28,7 @@ public class Route extends ArrayList<Waypoint> {
 	 */
 	public class Waypoint extends LatLngPoint2d {
 
-		public double heading;
+		public double heading = Route.this.heading;
 
 		/**
 		 * Construct with the given position
@@ -75,7 +75,7 @@ public class Route extends ArrayList<Waypoint> {
 
 			final JsonObject props = new JsonObject();
 			props.addProperty("streetview", getStreetviewUrl());
-			props.addProperty("heading", this.heading);
+			props.addProperty("heading", heading);
 
 			final JsonObject jo = new JsonObject();
 			jo.addProperty("type", "feature");
