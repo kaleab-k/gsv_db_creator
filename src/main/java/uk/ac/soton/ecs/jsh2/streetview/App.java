@@ -187,7 +187,7 @@ public class App
 			headingRate = 1;
 		}
 
-		if (pitchStart < 0 || pitchEnd <=0 || pitchRate <= 0) {
+		if (pitchStart == 0 && pitchEnd == 0 || pitchRate <= 0) {
 			pitchStart = pitch;
 			pitchEnd = pitch ;
 			pitchRate = 1;
