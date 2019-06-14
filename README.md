@@ -7,6 +7,7 @@ Commandline tool to extract streetview images along a route between two location
 - IDE (IntelliJ IDEA) (https://www.jetbrains.com/idea/specials/idea/ultimate.html?gclid=EAIaIQobChMIr9GS-cDo4gIVCJ7VCh0anw2bEAAYASAAEgLpvPD_BwE)
 
 Comments: [pcl]
+- Add instructions on installing jdk in linux using apt-get
 - Add information about what is required and what is optional (e.g. if Maven is optional if you have installed IDEA)
 
 # Dependencies
