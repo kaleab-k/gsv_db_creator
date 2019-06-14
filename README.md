@@ -6,6 +6,9 @@ Commandline tool to extract streetview images along a route between two location
 - Apache Maven (https://maven.apache.org/)
 - IDE (IntelliJ IDEA) (https://www.jetbrains.com/idea/specials/idea/ultimate.html?gclid=EAIaIQobChMIr9GS-cDo4gIVCJ7VCh0anw2bEAAYASAAEgLpvPD_BwE)
 
+<span style="color:red">some **This is Red Bold.** text</span>
+
+
 # Dependencies
 This code uses the StreetviewExtractor library (https://github.com/jonhare/StreetviewExtractor)
 
