@@ -6,14 +6,19 @@ Commandline tool to extract streetview images along a route between two location
 - Apache Maven (https://maven.apache.org/)
 - IDE (IntelliJ IDEA) (https://www.jetbrains.com/idea/specials/idea/ultimate.html?gclid=EAIaIQobChMIr9GS-cDo4gIVCJ7VCh0anw2bEAAYASAAEgLpvPD_BwE)
 
-<span style="color:red">some **This is Red Bold.** text</span>
-
+Comments: [pcl]
+- Add information about what is required and what is optional (e.g. if Maven is optional if you have installed IDEA)
 
 # Dependencies
 This code uses the StreetviewExtractor library (https://github.com/jonhare/StreetviewExtractor)
 
 # Installation and compilation
+
 You need Apache Maven. From a terminal run `mvn package shade:shade` to build an executable jar.
+
+Comments: [pcl]
+- Add information on how to get the system running using IDEA (what project file should be opened, how the complier? should be configured, etc)
+
 
 # Usage
 You will need a Google API key - get one here: https://console.developers.google.com.
