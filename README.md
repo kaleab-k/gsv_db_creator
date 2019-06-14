@@ -17,7 +17,7 @@ This code uses the StreetviewExtractor library (https://github.com/jonhare/Stree
 You need Apache Maven. From a terminal run `mvn package shade:shade` to build an executable jar.
 
 Comments: [pcl]
-- Add information on how to get the system running using IDEA (what project file should be opened, how the complier? should be configured, etc)
+- Add information on how to get the system running using IDEA (what project file should be opened, how the compliershould be configured? , etc)
 
 
 # Usage
