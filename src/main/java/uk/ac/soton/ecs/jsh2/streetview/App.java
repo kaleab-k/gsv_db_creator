@@ -224,6 +224,7 @@ public class App
 							routeJSON.addProperty("fpx", fpx);
 							routeJSON.addProperty("width", width);
 							routeJSON.addProperty("height", height);
+							routeJSON.addProperty("follow-route", followRoute);
 							// Initialize JSONArray to store the details of every image in the route
 							JsonArray imgJArray = new JsonArray();
 
