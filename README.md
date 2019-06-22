@@ -16,7 +16,7 @@ This code uses the StreetviewExtractor library (https://github.com/jonhare/Stree
 # Installation and compilation
 It can be compiled using a terminal or via the IDE.
 ## Using IDEA
-To import the project into the IDEA, click on File -> Open and then select the directory. 
+To import the project into the IDEA, click on *File -> Open* and then select the directory. 
 and follow the same steps as discussed for the *terminal* by clicking on 'Terminal' on the bottom of the IDE.
 
 ## Using the Terminal
