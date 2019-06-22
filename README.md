@@ -14,12 +14,14 @@ Comments: [pcl]
 This code uses the StreetviewExtractor library (https://github.com/jonhare/StreetviewExtractor)
 
 # Installation and compilation
+It can be compiled using a terminal or via the IDE.
+## Using IDEA
+To import the project into the IDEA, click on File -> Open and then select the directory. 
+and follow the same steps as discussed for the *terminal* by clicking on 'Terminal' on the bottom of the IDE.
 
+## Using the Terminal
 You need Apache Maven. From a terminal run `mvn package shade:shade` to build an executable jar.
-
-Comments: [pcl]
-- Add information on how to get the system running using IDEA (what project file should be opened, how the compliershould be configured? , etc)
-
+This creates the executable jar under the *target* subfolder. Thus, you can follow the *Usage* section to execute commands. 
 
 # Usage
 You will need a Google API key - get one here: https://console.developers.google.com.
