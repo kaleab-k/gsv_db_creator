@@ -9,6 +9,7 @@ Commandline tool to extract streetview images along a route between two location
 Comments: [pcl]
 - Add instructions on installing jdk in linux using apt-get
 - Add information about what is required and what is optional (e.g. if Maven is optional if you have installed IDEA)
+- At least for me, maven was not directly installed when installing IntellJ
 
 # Dependencies
 This code uses the StreetviewExtractor library (https://github.com/jonhare/StreetviewExtractor)
@@ -16,14 +17,16 @@ This code uses the StreetviewExtractor library (https://github.com/jonhare/Stree
 # Installation and compilation
 It can be compiled using a terminal or via the IDE.
 ## Using IDEA
-To import the project into the IDEA, click on *File -> Open* and then select the directory. 
-and follow the same steps as discussed for the *terminal* by clicking on 'Terminal' on the bottom of the IDE.
+To import the project into the IDEA, click on *File -> Open* and then select the directory rrot directory of the repository (where pom.xml is located) and follow the same steps as discussed for the *terminal* by clicking on 'Terminal' at the bottom-right sied of the IDE window.
 
 ## Using the Terminal
 You need Apache Maven. From a terminal run `mvn package shade:shade` to build an executable jar.
 This creates the executable jar under the *target* subfolder. Thus, you can follow the *Usage* section to execute commands. 
 
 # Usage
+Comments: [pcl]
+- The usage options and the example needs to be updated to the current version. The curresnt example produces a folder with the images, but no json file, and an invalid .mp4 video
+
 You will need a Google API key - get one here: https://console.developers.google.com.
 You'll need to enable the "Directions API" and "Street View Image API".
 
