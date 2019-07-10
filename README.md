@@ -7,8 +7,6 @@ Commandline tool to extract streetview images along a route between two location
 - Apache Maven (https://maven.apache.org/) - (*IntelliJ IDEA has in-built support for Maven*)
 
 Comments: [pcl]
-- Add instructions on installing jdk in linux using apt-get
-- Add information about what is required and what is optional (e.g. if Maven is optional if you have installed IDEA)
 - At least for me, maven was not directly installed when installing IntellJ
 
 # Dependencies
@@ -34,59 +32,72 @@ To test if everything’s done right, you can check your JAVA_HOME variable usin
 
 		echo $JAVA_HOME
 		
-And the output should be your Java installation path.	
+And the output should be your Java installation path.
+
 # Compiling the program
 It can be compiled using a terminal or via the IDE.
+
 ## Using IDEA
-To import the project into the IDEA, click on *File -> Open* and then select the directory rrot directory of the repository (where pom.xml is located) and follow the same steps as discussed for the *terminal* by clicking on 'Terminal' at the bottom-right sied of the IDE window.
+To import the project into IDEA, click on *File -> Open* and select the root directory of the repository (where pom.xml is located). Clicking on 'Terminal' at the bottom-right sied of the IDE window and follow the same steps as on the *Using the Terminal* section.
 
 ## Using the Terminal
 You need Apache Maven. From a terminal run `mvn package shade:shade` to build an executable jar.
-This creates the executable jar under the *target* subfolder. Thus, you can follow the *Usage* section to execute commands. 
+This creates the executable jar under the *target* subfolder. You can ow follow the *Usage* section steps to execute commands. 
 
 # Usage
 Comments: [pcl]
 - The usage options and the example needs to be updated to the current version. The curresnt example produces a folder with the images, but no json file, and an invalid .mp4 video
+- what are the differences between VAL and N? VAL is a string and N is a number?
+- which are the possible values for MODE??
+- Indicate default values, and possible values (ranges)
+- For fov, heading and pitch, indicate which value enables the range mode
+- fov-rate (and others), is it really a sampling rate or a step?
 
 You will need a Google API key - get one here: https://console.developers.google.com.
-You'll need to enable the "Directions API" and "Street View Image API".
+You will also need to enable the "Directions API" and "Street View Image API" for your Google Cloud account.
 
 Run the program with `java -jar target/StreetviewExtractor-1.0-SNAPSHOT.jar`
 
 
 	Usage: java -jar StreetviewExtractor.jar [options...]  		*from IDEA*
 	       java -jar target/StreetviewExtractor-1.0-SNAPSHOT.jar    *from terminal after building*
+		 
 		 --api-key (-a) VAL  : Google API Key
-		 --follow-route      : Recompute the heading according to the direction between
-				       consecutive points
-		 --fov (-f) N        : Field of view.
-		 --fov-end N         : the ending field of view value when using a range.
-		 --fov-rate N        : the sampling rate/frequency of the field of view value
-				       change when using a range
-		 --fov-start N       : the starting field of view value when using a range
+		 
+		 --single            : indicates that query is for a single location, not a
+		 		       route
+		 --from VAL          : FROM coordinates formatted as lat,lng
+		 --to VAL            : TO coordinates formatted as lat,lng
+		 --follow-route      : Heading value is relative to the direction between
+				       consecutive points in the route. If not present, 
+				       heading value is absolute.
 		 --fpx N             : Number of images per X. If --time-recode is enabled X is
 				       seconds; otherwise it is metres.
-		 --from VAL          : From coordinates formatted as lat,lng
-		 --heading (-he) N   : the heading value.
-		 --heading-end N     : the ending heading value when using a range.
-		 --heading-rate N    : the sampling rate/frequency of the heading value change
-				       when using a range
-		 --heading-start N   : the starting heading value when using a range
-		 --height (-h) N     : Image height.
-		 --mode VAL          : Mode of route
-		 --output (-o) VAL   : Output geojson file; the .json extension will be added
-				       if it's not present
-		 --pitch (-p) N      : the pitch value.
-		 --pitch-end N       : the ending pitch value when using a range.
-		 --pitch-rate N      : the sampling rate/frequency of the pitch value change
-				       when using a range
-		 --pitch-start N     : the starting pitch value when using a range
-		 --single            : indicates if the query is for a single location, not a
-				       route
 		 --time-recode       : Recode the path based on the time of each segment; the
 				       images will be further apart when moving faster
-		 --to VAL            : To coordinates formatted as lat,lng
-		 --width (-w) N      : Image width.
+		 --mode VAL          : Route mode
+		 
+		 --height (-h) N     : Image height
+		 --width (-w) N      : Image width
+				       
+		 --fov (-f) N        : Horizontal field of view
+		 --fov-start N       : starting fov value, when using a range
+		 --fov-end N         : ending fov value when using a range.
+		 --fov-rate N        : sampling rate of the fov values when using a range
+	 
+		 --heading (-he) N   : heading value.
+		 --heading-start N   : starting heading value when using a range
+		 --heading-end N     : ending heading value when using a range.
+		 --heading-rate N    : sampling rate of the heading values when using a range
+				       
+		 --pitch (-p) N      : pitch value
+		 --pitch-start N     : starting pitch value when using a range
+		 --pitch-end N       : ending pitch value when using a range
+		 --pitch-rate N      : sampling rate of the pitch values when using a range
+
+		 --output (-o) VAL   : Output geojson file; the .json extension will be added
+				       if it's not present
+		 
 		 --write-images (-i) : Output the images of the route.
 		 --write-video (-v)  : Output a video of the route.
 
