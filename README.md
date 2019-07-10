@@ -7,7 +7,7 @@ Commandline tool to extract streetview images along a route between two location
 - Apache Maven (https://maven.apache.org/) - (*IntelliJ IDEA has in-built support for Maven*)
 
 Comments: [pcl]
-- At least for me, maven was not directly installed when installing IntellJ
+- At least for me, maven was not directly installed when installing IntellJ IDEA
 
 # Dependencies
 This code uses the StreetviewExtractor library (https://github.com/jonhare/StreetviewExtractor)
@@ -46,12 +46,11 @@ This creates the executable jar under the *target* subfolder. You can ow follow 
 
 # Usage
 Comments: [pcl]
-- The usage options and the example needs to be updated to the current version. The curresnt example produces a folder with the images, but no json file, and an invalid .mp4 video
 - what are the differences between VAL and N? VAL is a string and N is a number?
-- which are the possible values for MODE??
+- which are the possible values for MODE?
 - Indicate default values, and possible values (ranges)
-- For fov, heading and pitch, indicate which value enables the range mode
-- fov-rate (and others), is it really a sampling rate or a step?
+- For fov, heading and pitch, indicate which tag enables the range mode
+- fov-rate (and others) is really a step, right? not a rate. Modify the names and descriptions
 
 You will need a Google API key - get one here: https://console.developers.google.com.
 You will also need to enable the "Directions API" and "Street View Image API" for your Google Cloud account.
@@ -64,9 +63,9 @@ Run the program with `java -jar target/StreetviewExtractor-1.0-SNAPSHOT.jar`
 		 
 		 --api-key (-a) VAL  : Google API Key
 		 
-		 --single            : indicates that query is for a single location, not a
-		 		       route
-		 --from VAL          : FROM coordinates formatted as lat,lng
+		 --single            : indicates single location mode, not a route
+		 --from VAL          : FROM coordinates formatted as lat,lng. Location for single
+		 		       location mode (--single)
 		 --to VAL            : TO coordinates formatted as lat,lng
 		 --follow-route      : Heading value is relative to the direction between
 				       consecutive points in the route. If not present, 
@@ -101,7 +100,13 @@ Run the program with `java -jar target/StreetviewExtractor-1.0-SNAPSHOT.jar`
 		 --write-images (-i) : Output the images of the route.
 		 --write-video (-v)  : Output a video of the route.
 
-Example:
+Comments: [pcl]
+- Add different examples and comment cases: e.g. 
+	- Single location and varying heading and pitch
+	- Route with absolute heading value
+	- Route with relative heading value
+
+Examples:
 
 	java -jar target/StreetviewExtractor-1.0-SNAPSHOT.jar --from 40.631538,-73.965327 --to 40.691099,-73.991785 -i -o test.json -a <your_api_key> 
 
