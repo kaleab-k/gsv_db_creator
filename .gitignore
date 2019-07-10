@@ -37,3 +37,6 @@ buildNumber.properties
 
 .idea/
 *.iml
+/dataset/
+/test-jpegs/
+/matlab/
