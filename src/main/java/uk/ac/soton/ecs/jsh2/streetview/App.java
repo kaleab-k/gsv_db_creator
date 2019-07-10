@@ -99,9 +99,9 @@ public class App
 	private int headingEnd;
 
 	@Option(
-			name = "--heading-rate",
-			usage = "the sampling rate/frequency of the heading value change when using a range")
-	private int headingRate;
+			name = "--heading-step",
+			usage = "the sampling step of the heading value change when using a range")
+	private int headingStep;
 
 	/**
 	 *  Options used when 'pitch' value is a range, not fixed,
@@ -117,9 +117,9 @@ public class App
 	private int pitchEnd;
 
 	@Option(
-			name = "--pitch-rate",
-			usage = "the sampling rate/frequency of the pitch value change when using a range")
-	private int pitchRate;
+			name = "--pitch-step",
+			usage = "the sampling step of the pitch value change when using a range")
+	private int pitchStep;
 
 	/**
 	 *  Options used when 'fov' value is a range, not fixed,
@@ -135,9 +135,9 @@ public class App
 	private int fovEnd;
 
 	@Option(
-			name = "--fov-rate",
-			usage = "the sampling rate/frequency of the field of view value change when using a range")
-	private double fovRate;
+			name = "--fov-step",
+			usage = "the sampling step of the field of view value change when using a range")
+	private double fovStep;
 
 	// Option when querying single location rather than a route
 	@Option(
@@ -181,27 +181,27 @@ public class App
 
 	private void execute() throws Exception {
 
-		if (headingStart < 0 || headingEnd <=0 || headingRate <= 0) {
+		if (headingStart < 0 || headingEnd <=0 || headingStep <= 0) {
 			headingStart = heading;
 			headingEnd = heading;
-			headingRate = 1;
+			headingStep = 1;
 		}
 
-		if (pitchStart == 0 && pitchEnd == 0 || pitchRate <= 0) {
+		if (pitchStart == 0 && pitchEnd == 0 || pitchStep <= 0) {
 			pitchStart = pitch;
 			pitchEnd = pitch ;
-			pitchRate = 1;
+			pitchStep = 1;
 		}
 
-		if (fovStart < 0 || fovEnd <=0 || fovRate <= 0) {
+		if (fovStart < 0 || fovEnd <=0 || fovStep <= 0) {
 			fovStart = fov;
 			fovEnd = fov ;
-			fovRate = 1;
+			fovStep = 1;
 		}
 		if (!single) {
-			for ( heading = headingStart; heading <= headingEnd; heading += headingRate) {
-				for (pitch = pitchStart; pitch <= pitchEnd; pitch += pitchRate) {
-					for (fov = fovStart; fov <= fovEnd; fov += fovRate) {
+			for ( heading = headingStart; heading <= headingEnd; heading += headingStep) {
+				for (pitch = pitchStart; pitch <= pitchEnd; pitch += pitchStep) {
+					for (fov = fovStart; fov <= fovEnd; fov += fovStep) {
 						num = 0;
 						output = "dataset/"+ from + "_" + to + "/" + "H:" + heading + "_P:"+ pitch + "_FOV:"+ fov + "_M:" + mode + "_S:" + width+"x"+height + ".json";
 						jsonPath = new File(output);
@@ -295,9 +295,9 @@ public class App
 			// Initialize JSONArray to store the details of every image in the route
 			JsonArray imgJArray = new JsonArray();
 
-			for ( heading = headingStart; heading <= headingEnd; heading += headingRate){
-				for (pitch = pitchStart; pitch <= pitchEnd; pitch += pitchRate){
-					for( fov = fovStart; fov <= fovEnd; fov += fovRate){
+			for ( heading = headingStart; heading <= headingEnd; heading += headingStep){
+				for (pitch = pitchStart; pitch <= pitchEnd; pitch += pitchStep){
+					for( fov = fovStart; fov <= fovEnd; fov += fovStep){
 
 						output = "dataset/"+ from + "/" + "M:" + mode + "_S:" + width+"x"+height + ".json";
 						jsonPath = new File(output);
