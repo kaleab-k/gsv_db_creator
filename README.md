@@ -8,6 +8,7 @@ Commandline tool to extract streetview images along a route between two location
 
 Comments: [pcl]
 - At least for me, maven was not directly installed when installing IntellJ IDEA
+	- You should call it inside the IDEA
 
 # Dependencies
 This code uses the StreetviewExtractor library (https://github.com/jonhare/StreetviewExtractor)
@@ -64,42 +65,48 @@ Run the program with `java -jar target/StreetviewExtractor-1.0-SNAPSHOT.jar`
 		 --api-key (-a) VAL  : Google API Key
 		 
 		 --single            : indicates single location mode, not a route
+		 		       Default: false
 		 --from VAL          : FROM coordinates formatted as lat,lng. Location for single
 		 		       location mode (--single)
 		 --to VAL            : TO coordinates formatted as lat,lng
 		 --follow-route      : Heading value is relative to the direction between
 				       consecutive points in the route. If not present, 
 				       heading value is absolute.
+				       Default: false 
 		 --fpx N             : Number of images per X. If --time-recode is enabled X is
 				       seconds; otherwise it is metres.
+				       Default: 0.1
 		 --time-recode       : Recode the path based on the time of each segment; the
 				       images will be further apart when moving faster
-		 --mode VAL          : Route mode
-		 
-		 --height (-h) N     : Image height
-		 --width (-w) N      : Image width
+				       Default: false
+		 --mode VAL          : Route mode with a possible values of 'DRIVING', 'WALKING', 'BICYCLING'
+		 		       further explanation: https://developers.google.com/maps/documentation/directions/intro#TravelModes
+				       Default: DRIVING
+		 --height (-h) N     : Image height (Default: 600)
+		 --width (-w) N      : Image width (Default: 300)
 				       
-		 --fov (-f) N        : Horizontal field of view
-		 --fov-start N       : starting fov value, when using a range
+		 --fov (-f) N        : Horizontal field of view (Default: 90)
+		 --fov-start N       : starting fov value, when using a range 
 		 --fov-end N         : ending fov value when using a range.
-		 --fov-rate N        : sampling rate of the fov values when using a range
+		 --fov-step N        : sampling step of the fov values when using a range
 	 
-		 --heading (-he) N   : heading value.
+		 --heading (-he) N   : heading value. (Default: 361)
 		 --heading-start N   : starting heading value when using a range
 		 --heading-end N     : ending heading value when using a range.
-		 --heading-rate N    : sampling rate of the heading values when using a range
+		 --heading-step N    : sampling step of the heading values when using a range
 				       
-		 --pitch (-p) N      : pitch value
+		 --pitch (-p) N      : pitch value (Default: 0)
 		 --pitch-start N     : starting pitch value when using a range
 		 --pitch-end N       : ending pitch value when using a range
-		 --pitch-rate N      : sampling rate of the pitch values when using a range
+		 --pitch-step N      : sampling step of the pitch values when using a range
 
 		 --output (-o) VAL   : Output geojson file; the .json extension will be added
 				       if it's not present
 		 
 		 --write-images (-i) : Output the images of the route.
 		 --write-video (-v)  : Output a video of the route.
-
+		N.B: 1. VAL indicates a string value while N indicates a number and the others are boolean.
+		     2. For the range mode to be activated the 'start', 'step', and 'end' values of fov, pitch or heading must be given.
 Comments: [pcl]
 - Add different examples and comment cases: e.g. 
 	- Single location and varying heading and pitch
