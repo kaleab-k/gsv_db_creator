@@ -115,8 +115,17 @@ Comments: [pcl]
 
 Examples:
 
-	java -jar target/StreetviewExtractor-1.0-SNAPSHOT.jar --from 40.631538,-73.965327 --to 40.691099,-73.991785 -i -o test.json -a <your_api_key> 
+- Example #1: Single location and varying heading and pitch
+	
+		java -jar target/StreetviewExtractor-1.0-SNAPSHOT.jar --from 40.631538,-73.965327 -o test.json --heading-start --heading-step 60 --heading-end 300 --pitch-start -45 --pitch-step 20 --pitch-end 45 --single -a <your_api_key> 
+	
+- Example #2:Route with absolute heading value
+	
+		java -jar target/StreetviewExtractor-1.0-SNAPSHOT.jar --from 40.631538,-73.965327 --to 40.691099,-73.991785 -i -o test.json --heading 50 -a <your_api_key>
+	
+- Example #3: Route with relative heading value
 
+		java -jar target/StreetviewExtractor-1.0-SNAPSHOT.jar --from 40.631538,-73.965327 --to 40.691099,-73.991785 -i -o test.json --heading 0 --follow-route -a <your_api_key>
 
 **Database Structure:**
 
