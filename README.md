@@ -25,6 +25,9 @@ And add the following line at the end of the file:
 
 		JAVA_HOME="/your/java/installation-path"
 		
+Comments: [pcl]: Is this strictly necessary? Not for me. If it is, add the typical installation location
+
+
 Save the file and then reload it:
 
 		source /etc/environment
