@@ -23,7 +23,7 @@ Next, open the file “/etc/environment” with a text editor
 		
 And add the following line at the end of the file:
 
-		JAVA_HOME="/your/java/installation-path"
+		JAVA_HOME="/your/java/installation-path"  #for example: /usr/lib/jvm/jdk-10.0.2
 		
 Comments: [pcl]: Is this strictly necessary? Not for me. If it is, add the typical installation location
 
@@ -37,6 +37,37 @@ To test if everything’s done right, you can check your JAVA_HOME variable usin
 		echo $JAVA_HOME
 		
 And the output should be your Java installation path.
+## Installing Maven
+1: Download apache-maven-3.6.0-bin.tar.gz binary archive from this official link: Download Apache Maven. You need to replace the version number by whatever the version you are downloading.
+
+2: Open the Terminal and move to the /opt directory.
+
+	cd /opt
+3: Extract the apache-maven archive into the opt directory.
+
+	sudo tar -xvzf ~/Downloads/apache-maven-3.6.0-bin.tar.gz
+4: Edit the _/etc/environment_ file and add the following environment variable:
+
+	M2_HOME="/opt/apache-maven-3.6.0"
+also, append the bin directory to the PATH variable: _/opt/apache-maven-3.6.0/bin_
+You can use nano to edit the file in the terminal itself. Execute the following command and modify the content as given below.
+
+	sudo nano /etc/environment
+
+WARNING: Do not replace your environment file with the following content because you may already have different environment variables which are required by other applications to function properly. Notice the end of PATH variable and the M2_HOME variable.
+
+	PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/jvm/jdk-10.0.2/bin:/opt/apache-maven-3.6.0/bin"
+	M2_HOME="/opt/apache-maven-3.6.0"
+
+After the modification, press _Ctrl + O_ to save the changes and _Ctrl + X_ to exit nano.
+
+5: Update the mvn command:
+
+	sudo update-alternatives --install "/usr/bin/mvn" "mvn" "/opt/apache-maven-3.6.0/bin/mvn" 0
+	sudo update-alternatives --set mvn /opt/apache-maven-3.6.0/bin/mvn
+Step 7: Logout and login to the computer and check the Maven version using the following command.
+	
+	mvn --version
 
 # Compiling the program
 It can be compiled using a terminal or via the IDE.
@@ -50,7 +81,11 @@ This creates the executable jar under the *target* subfolder. You can ow follow 
 
 # Usage
 Comments: [pcl]
-- 361 value in heading needs to be clarified
+- what are the differences between VAL and N? VAL is a string and N is a number?
+- which are the possible values for MODE?
+- Indicate default values, and possible values (ranges)
+- For fov, heading and pitch, indicate which tag enables the range mode
+- fov-rate (and others) is really a step, right? not a rate. Modify the names and descriptions
 
 You will need a Google API key - get one here: https://console.developers.google.com.
 You will also need to enable the "Directions API" and "Street View Image API" for your Google Cloud account.
@@ -58,41 +93,43 @@ You will also need to enable the "Directions API" and "Street View Image API" fo
 Run the program with `java -jar target/StreetviewExtractor-1.0-SNAPSHOT.jar`
 
 
-	Usage: java -jar StreetviewExtractor.jar [OPTIONS]  			  *from IDEA*
-	       java -jar target/StreetviewExtractor-1.0-SNAPSHOT.jar [OPTIONS]    *from terminal after building*
-		
-		OPTIONS:
-		
+	Usage: java -jar StreetviewExtractor.jar [options...]  		*from IDEA*
+	       java -jar target/StreetviewExtractor-1.0-SNAPSHOT.jar    *from terminal after building*
+		 
 		 --api-key (-a) VAL  : Google API Key
 		 
-		 --single            : indicates single location mode, not a route. Default: false
+		 --single            : indicates single location mode, not a route
+		 		       Default: false
 		 --from VAL          : FROM coordinates formatted as lat,lng. Location for single
 		 		       location mode (--single)
 		 --to VAL            : TO coordinates formatted as lat,lng
-		 --follow-route      : Heading value is relative to the direction between consecutive
-		 		       points in the route. If not present, heading value is absolute.
+		 --follow-route      : Heading value is relative to the direction between
+				       consecutive points in the route. If not present, 
+				       heading value is absolute.
 				       Default: false 
 		 --fpx N             : Number of images per X. If --time-recode is enabled X is
-				       seconds; otherwise it is metres. Default: 0.1
+				       seconds; otherwise it is metres.
+				       Default: 0.1
 		 --time-recode       : Recode the path based on the time of each segment; the
-				       images will be further apart when moving faster. Default: false
-		 --mode VAL          : Route mode. Options: [DRIVING, WALKING, BICYCLING]
-		 		       further details: https://developers.google.com/maps/documentation/directions/intro#TravelModes
+				       images will be further apart when moving faster
+				       Default: false
+		 --mode VAL          : Route mode with a possible values of 'DRIVING', 'WALKING', 'BICYCLING'
+		 		       further explanation: https://developers.google.com/maps/documentation/directions/intro#TravelModes
 				       Default: DRIVING
-		 --height (-h) N     : Image height. Default: 600
-		 --width (-w) N      : Image width. Default: 300
+		 --height (-h) N     : Image height (Default: 600)
+		 --width (-w) N      : Image width (Default: 300)
 				       
-		 --fov (-f) N        : Horizontal field of view. Default: 90
+		 --fov (-f) N        : Horizontal field of view (Default: 90)
 		 --fov-start N       : starting fov value, when using a range 
 		 --fov-end N         : ending fov value when using a range.
 		 --fov-step N        : sampling step of the fov values when using a range
 	 
-		 --heading (-he) N   : heading value. Default: 361
+		 --heading (-he) N   : heading value. (Default: 361)
 		 --heading-start N   : starting heading value when using a range
 		 --heading-end N     : ending heading value when using a range.
 		 --heading-step N    : sampling step of the heading values when using a range
 				       
-		 --pitch (-p) N      : pitch value. Default: 0
+		 --pitch (-p) N      : pitch value (Default: 0)
 		 --pitch-start N     : starting pitch value when using a range
 		 --pitch-end N       : ending pitch value when using a range
 		 --pitch-step N      : sampling step of the pitch values when using a range
@@ -102,10 +139,8 @@ Run the program with `java -jar target/StreetviewExtractor-1.0-SNAPSHOT.jar`
 		 
 		 --write-images (-i) : Output the images of the route.
 		 --write-video (-v)  : Output a video of the route.
-		 
-		N.B: 1. VAL indicates a string value. N indicates a number.
-		     2. The range modes are activated for fov, pitch or heading if the 'start', 'step', and 'end' values are given.
-
+		N.B: 1. VAL indicates a string value while N indicates a number and the others are boolean.
+		     2. For the range mode to be activated the 'start', 'step', and 'end' values of fov, pitch or heading must be given.
 Comments: [pcl]
 - Add different examples and comment cases: e.g. 
 	- Single location and varying heading and pitch
