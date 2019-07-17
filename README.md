@@ -81,7 +81,8 @@ This creates the executable jar under the *target* subfolder. You can follow the
 
 # Usage
 Comments: [pcl]
-- 361 value in heading needs to be clarified
+- 361 value in heading needs to be clarified. 
+	- I just used it because it was default in the previous verion, but I have changed it to 0 now.
 
 You will need a Google API key - get one here: https://console.developers.google.com.
 You will also need to enable the "Directions API" and "Street View Image API" for your Google Cloud account.
@@ -118,7 +119,7 @@ Run the program with `java -jar target/StreetviewExtractor-1.0-SNAPSHOT.jar`
 		 --fov-end N         : ending fov value when using a range.
 		 --fov-step N        : sampling step of the fov values when using a range
 	 
-		 --heading (-he) N   : heading value. Default: 361
+		 --heading (-he) N   : heading value. Default: 0
 		 --heading-start N   : starting heading value when using a range
 		 --heading-end N     : ending heading value when using a range.
 		 --heading-step N    : sampling step of the heading values when using a range
@@ -155,7 +156,7 @@ Examples:
 
 ## File System Structure:
 
-Every route (ofigin and destination) generates a route folder with name &#39; **A,B\_Y,Z**&#39;, where:
+Every route (origin and destination) generates a route folder with name &#39; **A,B\_Y,Z**&#39;, where:
 
 - A and B are the latitude and longitude of the origin respectively; and
 - Y and Z are the latitude and longitude of the destination respectively.
@@ -173,6 +174,8 @@ Comments: [pcl]
 - What if a parameter is varying, e.g. heading? Different forlders are created? Clarify this.
 
 Inside each route-version folder, the images are named **X.jpg** where X is a number ranging from 00000 up to 99999.
+
+**P.S.** In case of a range of values are given as parameters, different folders will be created with every possible combinations.  
 
  ## Metadata
 
@@ -196,6 +199,9 @@ It also contains a _JSON Array_, with key  _&#39;images&#39;_ that contains as m
 - _lng:_ real value of the longitude of the location.
 - _heading_: integer value of the heading of this particular waypoint.
 
+For the single location mode, the properties: _heading_, _pitch_, and _fov_ will not be included in the root _JSON Object_ rather they will be included in the _JSON Objects_ that are elements of the _images_ _JSON Array_. On the other hand, the _lat_ and _lng_ properties will be included in the root _JSON Object_ and excluded from the elements of the Array.  
+
 Comments: [pcl]
 - What about the pitch?, this can only be here in the single location case? If it is the case, describe the "possible" values in each JSON object.
+	- I think pitch will not vary for each image in the same folder, as varying pitches will have different folders. Heading is included just in case the follow-route is true so that it might change from image to image. 
 
