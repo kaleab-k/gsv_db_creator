@@ -196,4 +196,6 @@ It also contains a _JSON Array_, with key  _&#39;images&#39;_ that contains as m
 - _lng:_ identified by the key _&#39;lng&#39;_ and has a real value of the longitude of the location.
 - _heading_: real value of the heading of this particular waypoint.
 
+Comments: [pcl]
+- What about the pitch, this can only be here in the single location case? If it is the case, describe the "possible" values in each JSON object.
 
