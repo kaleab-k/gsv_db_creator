@@ -137,12 +137,6 @@ Run the program with `java -jar target/StreetviewExtractor-1.0-SNAPSHOT.jar`
 		N.B: 1. VAL indicates a string value. N indicates a number.
 		     2. The range modes are activated for fov, pitch or heading if the 'start', 'step', and 'end' values are given.
 
-Comments: [pcl]
-- Add different examples and comment cases: e.g. 
-	- Single location and varying heading and pitch
-	- Route with absolute heading value
-	- Route with relative heading value
-
 Examples:
 
 - Example #1: Single location and varying heading and pitch
@@ -157,33 +151,16 @@ Examples:
 
 		java -jar target/StreetviewExtractor-1.0-SNAPSHOT.jar --from 40.631538,-73.965327 --to 40.691099,-73.991785 -i -o test.json --heading 0 --follow-route -a <your_api_key>
 
-**Database Structure:**
+# Database Structure:
 
-The proposed database structure is using JSON format to store the data. Thus, we will have a root _JSON Object_ and we will store the global parameters in a route as _key-value pair_ in the root _JSON Object_. These parameters are:
+## File System Structure:
 
-- _From:_ identified by the key _&#39;from&#39;_ and has the string value of the origin latitude and longitude concatenated by comma.
-- _To:_ identified by the key _&#39;to&#39;_ and has the string value of the destination latitude and longitude concatenated by comma.
-- _Heading:_ identified by the key _&#39;heading&#39;_ and has an integer value of heading used on the query of the Google Street View API.
-- _Pitch:_ identified by the key _&#39;pitch&#39;_ and has the an integer value of the pitch used on the query of the Google Street View API.
-- _Field of View:_ identified by the key _&#39;fov&#39;_ and has an integer value of the field of view used on the query of the Google Street View API.
-- _Frames per X:_ identified by the key _&#39;fpx&#39;_ and has a real value of the frames per meter or frames per second used.
-- _Width:_ identified by the key _&#39;width&#39;_ and has a integer value of the width of the image stored.
-- _Height:_ identified by the key _&#39;height&#39;_ and has a integer value of the height of the image stored.
-
-Next thing to store is the sequence of all the images/waypoints found in the route. For this, we will use _JSON Array_ that will be part of the root _JSON Object_. Inside this _JSON Array_, there will be as many _JSON Objects_ as the images or waypoints stored. The key of this array will be _&#39;images&#39;_ and and four parameters unique to each waypoint will be stored in each element of the array. The parameters are:
-- _Sequence Number:_ identified by the key _&#39;seqNumber&#39;_ and has an integer value of a number between 00000 and 99999 that will identify the waypoint/image.
-- _Latitude:_ identified by the key _&#39;lat&#39;_ and has a real value of the latitude of the location.
-- _Longitude:_ identified by the key _&#39;lng&#39;_ and has a real value of the longitude of the location.
-- _Heading_: identified by the key &#39;heading&#39; and has a real value of the heading used in the Google Street View API for this particular waypoint.
-
-**File System Structure:**
-
-For every route, we will have a folder named as &#39; **A,B\_Y,Z**&#39;, where:
+Every route (ofigin and destination) generates a route folder with name &#39; **A,B\_Y,Z**&#39;, where:
 
 - A and B are the latitude and longitude of the origin respectively; and
 - Y and Z are the latitude and longitude of the destination respectively.
 
-Furthermore, inside every route folder, we will have a folder having images of a specific configuration of the parameter values. Thus, it will named as &#39; **H:{HD}\_P:{P}\_FOV:{F}\_M:{M}\_S:{W}x{H}-jpegs**&#39; where:
+Each route folder can contain different versions of the route (different parameters). Each version is contained in a folder with name &#39; **H:{HD}\_P:{P}\_FOV:{F}\_M:{M}\_S:{W}x{H}-jpegs**&#39; where:
 
 - **{HD}**: is the heading value
 - **{P}**: is the pitch value
@@ -191,4 +168,32 @@ Furthermore, inside every route folder, we will have a folder having images of a
 - **{M}**: is the mode of the direction
 - **{W}**: is the width of the images
 - **{H}**: is the height of the images
-And inside the folder, the images will be named as **X.jpg** where X is a number ranging from 00000 to possibly 99999.
+
+Comments: [pcl]
+- What if a parameter is varying, e.g. heading? Different forlders are created? Clarify this.
+
+Inside each route-version folder, the images are named **X.jpg** where X is a number ranging from 00000 up to 99999.
+
+ ## Metadata
+
+Additionally, the metadata of each route version is saved in a JSON file with name &#39; **H:{HD}\_P:{P}\_FOV:{F}\_M:{M}\_S:{W}x{H}.json**&#39;. 
+
+The root _JSON Object_ stores the global parameters of the route as _key-value pairs_. These parameters are:
+
+- _from:_ string with origin latitude and longitude, concatenated by a comma.
+- _to:_ string with destination latitude and longitude, concatenated by comma.
+- _heading:_  integer value of heading used on the query of the Google Street View API.
+- _pitch:_ integer value of the pitch used on the query of the Google Street View API.
+- _fov:_ field of view integer value used on the query of the Google Street View API.
+- _fpx:_ real value of the frames per meter or frames per second.
+- _width:_ integer value of the width of the images.
+- _height:_ integer value of the height of the images.
+
+It also contains a _JSON Array_, with key  _&#39;images&#39;_ that contains as many _JSON Objects_ as the images/waypoints. Each image _JSON Object_ stores the value of four parameters that correspond to each image/waypoint:
+
+- _seqNumber:_  integer value of from 00000 to 99999 that identies the waypoint/image.
+- _lat:_ identified by the key _&#39;lat&#39;_ and has a real value of the latitude of the location.
+- _lng:_ identified by the key _&#39;lng&#39;_ and has a real value of the longitude of the location.
+- _heading_: real value of the heading of this particular waypoint.
+
+
