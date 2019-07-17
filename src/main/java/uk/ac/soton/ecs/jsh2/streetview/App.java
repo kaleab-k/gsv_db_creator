@@ -51,7 +51,7 @@ public class App
 	int pitch = 0;
 
 	@Option(name = "--heading", aliases = "-he", usage = "rotamiento.")
-	int heading = 361;
+	int heading = 0;
 
 	@Option(
 			name = "--from",
