@@ -2,19 +2,21 @@
 Commandline tool to extract streetview images along a route between two locations
 
 # Requirements
-- Java Development Kit (https://www.oracle.com/technetwork/java/javase/overview/index.html)
-- IDE (IntelliJ IDEA) (https://www.jetbrains.com/idea/specials/idea/ultimate.html?gclid=EAIaIQobChMIr9GS-cDo4gIVCJ7VCh0anw2bEAAYASAAEgLpvPD_BwE)
-- Apache Maven (https://maven.apache.org/) - (*IntelliJ IDEA has in-built support for Maven*)
 
-Comments: [pcl]
-- At least for me, maven was not directly installed when installing IntellJ IDEA
-	- You should call it inside the IDEA
+Required:
+- Java Development Kit (https://www.oracle.com/technetwork/java/javase/overview/index.html)
+- Apache Maven (https://maven.apache.org/) 
+
+Recommended: 
+- IDE (IntelliJ IDEA) (https://www.jetbrains.com/idea/specials/idea/ultimate.html?gclid=EAIaIQobChMIr9GS-cDo4gIVCJ7VCh0anw2bEAAYASAAEgLpvPD_BwE) (*IntelliJ IDEA has built-in support for Maven*)
+
 
 # Dependencies
-This code uses the StreetviewExtractor library (https://github.com/jonhare/StreetviewExtractor)
+This code uses and modifies the StreetviewExtractor library (https://github.com/jonhare/StreetviewExtractor)
 
 # Installation and compilation
-## Insialling JDK on Ubuntu
+
+## Installing JDK on Ubuntu
 		apt-get install default-jdk
 		update-alternatives --config java
 Next, open the file “/etc/environment” with a text editor
@@ -25,9 +27,6 @@ And add the following line at the end of the file:
 
 		JAVA_HOME="/your/java/installation-path"  #for example: /usr/lib/jvm/jdk-10.0.2
 		
-Comments: [pcl]: Is this strictly necessary? Not for me. If it is, add the typical installation location
-
-
 Save the file and then reload it:
 
 		source /etc/environment
@@ -37,7 +36,8 @@ To test if everything’s done right, you can check your JAVA_HOME variable usin
 		echo $JAVA_HOME
 		
 And the output should be your Java installation path.
-## Installing Maven
+
+## Installing Maven (only needed if IntelliJ IDEA is not used)
 1: Download apache-maven-3.6.0-bin.tar.gz binary archive from this official link: Download Apache Maven. You need to replace the version number by whatever the version you are downloading.
 
 2: Open the Terminal and move to the /opt directory.
@@ -76,8 +76,8 @@ It can be compiled using a terminal or via the IDE.
 To import the project into IDEA, click on *File -> Open* and select the root directory of the repository (where pom.xml is located). Clicking on 'Terminal' at the bottom-right sied of the IDE window and follow the same steps as on the *Using the Terminal* section.
 
 ## Using the Terminal
-You need Apache Maven. From a terminal run `mvn package shade:shade` to build an executable jar.
-This creates the executable jar under the *target* subfolder. You can ow follow the *Usage* section steps to execute commands. 
+You need Apache Maven. From a terminal run `mvn install` and `mvn package shade:shade` to build an executable jar.
+This creates the executable jar under the *target* subfolder. You can follow the *Usage* section steps to execute commands. 
 
 # Usage
 Comments: [pcl]
