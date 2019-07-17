@@ -192,10 +192,10 @@ The root _JSON Object_ stores the global parameters of the route as _key-value p
 It also contains a _JSON Array_, with key  _&#39;images&#39;_ that contains as many _JSON Objects_ as the images/waypoints. Each image _JSON Object_ stores the value of four parameters that correspond to each image/waypoint:
 
 - _seqNumber:_  integer value of from 00000 to 99999 that identies the waypoint/image.
-- _lat:_ identified by the key _&#39;lat&#39;_ and has a real value of the latitude of the location.
-- _lng:_ identified by the key _&#39;lng&#39;_ and has a real value of the longitude of the location.
-- _heading_: real value of the heading of this particular waypoint.
+- _lat:_ real value of the latitude of the location.
+- _lng:_ real value of the longitude of the location.
+- _heading_: integer value of the heading of this particular waypoint.
 
 Comments: [pcl]
-- What about the pitch, this can only be here in the single location case? If it is the case, describe the "possible" values in each JSON object.
+- What about the pitch?, this can only be here in the single location case? If it is the case, describe the "possible" values in each JSON object.
 
