@@ -203,7 +203,7 @@ public class App
 				for (pitch = pitchStart; pitch <= pitchEnd; pitch += pitchStep) {
 					for (fov = fovStart; fov <= fovEnd; fov += fovStep) {
 						num = 0;
-						output = "dataset/"+ from + "_" + to + "/" + "H:" + heading + "_P:"+ pitch + "_FOV:"+ fov + "_M:" + mode + "_S:" + width+"x"+height + ".json";
+						output = "dataset/"+ from + "_" + to + "/" + "H=" + heading + "_P="+ pitch + "_FOV="+ fov + "_M=" + mode + "_S=" + width+"x"+height + ".json";
 						jsonPath = new File(output);
 						checkPaths();
 
@@ -299,7 +299,7 @@ public class App
 				for (pitch = pitchStart; pitch <= pitchEnd; pitch += pitchStep){
 					for( fov = fovStart; fov <= fovEnd; fov += fovStep){
 
-						output = "dataset/"+ from + "/" + "M:" + mode + "_S:" + width+"x"+height + ".json";
+						output = "dataset/"+ from + "/" + "M=" + mode + "_S=" + width+"x"+height + ".json";
 						jsonPath = new File(output);
 						checkPaths();
 
