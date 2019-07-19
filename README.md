@@ -80,9 +80,6 @@ You need Apache Maven. From a terminal run `mvn install` and `mvn package shade:
 This creates the executable jar under the *target* subfolder. You can follow the *Usage* section steps to execute commands. 
 
 # Usage
-Comments: [pcl]
-- 361 value in heading needs to be clarified. 
-	- I just used it because it was default in the previous verion, but I have changed it to 0 now.
 
 You will need a Google API key - get one here: https://console.developers.google.com.
 You will also need to enable the "Directions API" and "Street View Image API" for your Google Cloud account.
@@ -170,38 +167,32 @@ Each route folder can contain different versions of the route (different paramet
 - **{W}**: is the width of the images
 - **{H}**: is the height of the images
 
-Comments: [pcl]
-- What if a parameter is varying, e.g. heading? Different forlders are created? Clarify this.
-
 Inside each route-version folder, the images are named **X.jpg** where X is a number ranging from 00000 up to 99999.
 
-**P.S.** In case of a range of values are given as parameters, different folders will be created with every possible combinations.  
-
+**P.S.** In case of a range of values are given as parameters (fov, heading, pitch): 
+ - For a route: different folders will be created for all combinatons of values.   
+ - For a single location (--single): images corresponding to the combinations of heading-pitch values will be contained in a single folder. Different fov values will create different folders. 
+ 
+ Comments: [pcl]
+- Check if what I have changed in the PS is correct 
+ 
  ## Metadata
 
-Additionally, the metadata of each route version is saved in a JSON file with name &#39; **H:{HD}\_P:{P}\_FOV:{F}\_M:{M}\_S:{W}x{H}.json**&#39;. 
+Additionally, the metadata of each route version is saved in a JSON file with name &#39; **H={HD}\_P={P}\_FOV={F}\_M={M}\_S={W}x{H}.json**&#39;. 
 
-The root _JSON Object_ stores the global parameters of the route as _key-value pairs_. These parameters are:
+The root _JSON Object_ stores all parameters that are common to the route/single-location as _key-value pairs_. It also contains a _JSON Array_, with key  _&#39;images&#39;_ that contains as many _JSON Objects_ as the images/waypoints. Each image _JSON Object_ stores the value of the parameters that are specific to each image/waypoint:
+
+Possible parameters of the roor _JSON Object_ and _JSON Array_ are:
 
 - _from:_ string with origin latitude and longitude, concatenated by a comma.
 - _to:_ string with destination latitude and longitude, concatenated by comma.
+- _width:_ integer value of the width of the images.
+- _height:_ integer value of the height of the images.
+- _fpx:_ real value of the frames per meter or frames per second.
 - _heading:_  integer value of heading used on the query of the Google Street View API.
 - _pitch:_ integer value of the pitch used on the query of the Google Street View API.
 - _fov:_ field of view integer value used on the query of the Google Street View API.
-- _fpx:_ real value of the frames per meter or frames per second.
-- _width:_ integer value of the width of the images.
-- _height:_ integer value of the height of the images.
-
-It also contains a _JSON Array_, with key  _&#39;images&#39;_ that contains as many _JSON Objects_ as the images/waypoints. Each image _JSON Object_ stores the value of four parameters that correspond to each image/waypoint:
-
 - _seqNumber:_  integer value of from 00000 to 99999 that identies the waypoint/image.
 - _lat:_ real value of the latitude of the location.
 - _lng:_ real value of the longitude of the location.
-- _heading_: integer value of the heading of this particular waypoint.
-
-For the single location mode, the properties: _heading_, _pitch_, and _fov_ will not be included in the root _JSON Object_ rather they will be included in the _JSON Objects_ that are elements of the _images_ _JSON Array_. On the other hand, the _lat_ and _lng_ properties will be included in the root _JSON Object_ and excluded from the elements of the Array.  
-
-Comments: [pcl]
-- What about the pitch?, this can only be here in the single location case? If it is the case, describe the "possible" values in each JSON object.
-	- I think pitch will not vary for each image in the same folder, as varying pitches will have different folders. Heading is included just in case the follow-route is true so that it might change from image to image. 
 
