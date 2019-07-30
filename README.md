@@ -94,7 +94,7 @@ Run the program with `java -jar target/StreetviewExtractor-1.0-SNAPSHOT.jar`
 		
 		 --api-key (-a) VAL  : Google API Key
 		 
-		 --single            : indicates single location mode, not a route. Default: false
+		 --single            : Indicates single location mode, not a route. Default: false
 		 --from VAL          : FROM coordinates formatted as lat,lng. Location for single
 		 		       location mode (--single)
 		 --to VAL            : TO coordinates formatted as lat,lng
@@ -131,6 +131,8 @@ Run the program with `java -jar target/StreetviewExtractor-1.0-SNAPSHOT.jar`
 		 
 		 --write-images (-i) : Output the images of the route.
 		 --write-video (-v)  : Output a video of the route.
+		 --gt 		     : Indicates if the images are going to be used as ground truth 
+                                       (addes '_GT' on the folder name). Default: false
 		 
 		N.B: 1. VAL indicates a string value. N indicates a number.
 		     2. The range modes are activated for fov, pitch or heading if the 'start', 'step', and 'end' values are given.
